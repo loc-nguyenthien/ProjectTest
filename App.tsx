@@ -5,7 +5,7 @@
  * @format
  */
 
-import React from 'react';
+import React, {useRef} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
@@ -13,17 +13,13 @@ import {
   StatusBar,
   StyleSheet,
   Text,
+  TouchableOpacity,
   useColorScheme,
   View,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {Colors, Header} from 'react-native/Libraries/NewAppScreen';
+import {BottomSheet} from './BottomSheet';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -57,6 +53,7 @@ function Section({children, title}: SectionProps): JSX.Element {
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
+  const bottomSheetRef = useRef(null);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -80,18 +77,26 @@ function App(): JSX.Element {
             Edit <Text style={styles.highlight}>App.tsx</Text> to change this
             screen and then come back to see your edits.
           </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
         </View>
+        <TouchableOpacity
+          style={{
+            backgroundColor: 'grey',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: 20,
+            padding: 20,
+            borderRadius: 10,
+          }}
+          onPress={() => {
+            if (bottomSheetRef && bottomSheetRef.current) {
+              bottomSheetRef.current?.show?.();
+            }
+          }}>
+          <Text>Open Bottom Sheet</Text>
+        </TouchableOpacity>
       </ScrollView>
+      <BottomSheet ref={bottomSheetRef}></BottomSheet>
     </SafeAreaView>
   );
 }
